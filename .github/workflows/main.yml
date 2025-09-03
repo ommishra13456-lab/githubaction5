@@ -19,7 +19,7 @@ jobs:
   runs-on: ubuntu-latest
   steps:
   - name: artifactuse
-    run: echo"artifactfile" >first.txt
+    run: echo "artifactfile" >first.txt
   - name: artifactaction
     uses: actions/upload-artifact@v4
     with:
@@ -33,21 +33,22 @@ jobs:
     uses: actions/download-artifact@v4
     with:
      name: artifact
-     run: cat first.txt
+  - name: artofart  
+    run: cat first.txt
  jobs4:
   runs-on: ubuntu-latest
   outputs:
-   username: ${{steps.steps1.username.outputs}}
-   password: ${{steps.steps1.password.outputs}}
+   username: ${{steps.steps1.outputs.username}}
+   password: ${{steps.steps1.outputs.password}}
   steps:
-  - name: outputuse
-  - id: steps1
-    run: |
-     echo "usename=chiku" >> GITHUB_OUTPUT
-     echo "password=1234" >> GITHUB_OUTPUT
+    - id: steps1
+      run: |
+       echo "usename=chiku" >> $GITHUB_OUTPUT
+       echo "password=1234" >> $GITHUB_OUTPUT
  jobs5:
   runs-on: ubuntu-latest
   needs: jobs4
+  if: success()
   steps:
   - name: useoutput
     run: |
@@ -60,7 +61,19 @@ jobs:
   env: 
    username: omsai
    password: ${{secrets.MY_PASSWORD}}
-  
+   run: echo "$name and $password"
+ jobs7:
+  runs-on: ubuntu-latest
+  steps:
+  - name: depend
+    uses: actions/cache@v4
+    with:
+     path: ~/.npm
+     key: ${{runner.os}}-node-${{'hashFiles(**/package-lock.json)'}}
+     restore-key: |
+      ${{runner.os}}-node-
+  - name: installdepen
+    run: npm ci
   
      
 
