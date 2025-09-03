@@ -61,7 +61,7 @@ jobs:
   env: 
    username: omsai
    password: ${{secrets.MY_PASSWORD}}
-   run: echo "$name and $password"
+   run: echo "$username and $password"
  jobs7:
   runs-on: ubuntu-latest
   steps:
